@@ -1122,7 +1122,7 @@ static void handle_wlc_ready(void) {
 	output->unmanaged = create_list();
 	output->bg_pid = -1;
 	add_child(&root_container, output);
-	output->x = -1000;
+	output->x = 1920 * 2;
 	output->y = 0;
 	new_workspace(output, "__VT220");
 	// End VT220 stuff

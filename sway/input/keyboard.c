@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 199309L
 #include <assert.h>
 #include <limits.h>
 #include <strings.h>
@@ -598,6 +599,15 @@ static void determine_bar_visibility(uint32_t modifiers) {
 
 		bool vis_by_mod = (~modifiers & bar->modifier) == 0;
 		if (bar->visible_by_modifier != vis_by_mod) {
+			if (vis_by_mod) {
+				clock_gettime(CLOCK_MONOTONIC, &bar->visible_by_modifier_since);
+			} else {
+				struct timespec now;
+				clock_gettime(CLOCK_MONOTONIC, &now);
+				if (  (now.tv_sec - bar->visible_by_modifier_since.tv_sec) * (uint64_t)1000000000
+				 	  + now.tv_nsec - bar->visible_by_modifier_since.tv_nsec < 20000000)
+					continue;
+			}
 			// If visible by modifier is set, send that it is no longer visible
 			// by modifier (regardless of bar mode and state). Otherwise, only
 			// send the visible by modifier status if mode and state are hide

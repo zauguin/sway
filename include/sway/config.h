@@ -311,6 +311,7 @@ struct bar_config {
 	 */
 	char *hidden_state;
 	bool visible_by_modifier; // only relevant in "hide" mode
+	struct timespec visible_by_modifier_since;
 	/**
 	 * Id name used to identify the bar through IPC.
 	 *
